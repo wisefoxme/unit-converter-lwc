@@ -1,18 +1,18 @@
 {
-  "name": "sf-npm-package",
+  "name": "unit-converter-lwc",
   "private": false,
   "version": "1.0.0",
   "publishConfig": {
     "access": "public"
   },
-  "description": "An app",
+  "description": "A simple unit converter Lightning Web Component for Salesforce.",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/wisefoxme/sf-npm-package-template.git"
+    "url": "git+https://github.com/wisefoxme/unit-converter-lwc.git"
   },
   "author": {
-    "name": "John Doe",
-    "email": "john.doe@example.com"
+    "name": "Renato Oliveira",
+    "email": "renato.oliveira@dogeforce.com"
   },
   "engines": {
     "node": ">=22.0.0"
@@ -23,8 +23,14 @@
     "lightning-web-components",
     "lightning",
     "sfdx",
-    "calendar",
-    "event",
+    "unit",
+    "converter",
+    "conversion",
+    "units",
+    "measurements",
+    "length",
+    "weight",
+    "temperature",
     "component"
   ],
   "scripts": {
