@@ -6,25 +6,27 @@
   >
     <lightning-layout-item padding="around-small" size="6">
       <lightning-input
-        type="number"
         data-id="input-from"
+        disabled={fromDisabled}
         label={fromLabel}
-        variant={inputVariant}
-        value={_valueFrom}
         onchange={handleFromValueChange}
         step="any"
+        type="number"
+        value={_valueFrom}
+        variant={inputVariant}
       >
       </lightning-input>
     </lightning-layout-item>
     <lightning-layout-item padding="around-small" size="6">
       <lightning-input
-        type="number"
         data-id="input-to"
+        disabled={toDisabled}
         label={toLabel}
-        variant={inputVariant}
-        value={_valueTo}
         onchange={handleToValueChange}
         step="any"
+        type="number"
+        value={_valueTo}
+        variant={inputVariant}
       >
       </lightning-input>
     </lightning-layout-item>

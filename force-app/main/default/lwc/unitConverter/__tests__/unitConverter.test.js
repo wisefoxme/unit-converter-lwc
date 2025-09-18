@@ -77,6 +77,54 @@ describe("c-unit-converter", () => {
       expect(inputs[0].label).toBe("Custom From");
       expect(inputs[1].label).toBe("Custom To");
     });
+
+    it("should disable both inputs when disabled is true", () => {
+      // Arrange
+      const element = createElement("c-unit-converter", {
+        is: UnitConverter
+      });
+      element.disabled = true;
+
+      // Act
+      document.body.appendChild(element);
+
+      // Assert
+      const inputs = element.shadowRoot.querySelectorAll("lightning-input");
+      expect(inputs[0].disabled).toBe(true);
+      expect(inputs[1].disabled).toBe(true);
+    });
+
+    it("should disable only the from input when disableFrom is true", () => {
+      // Arrange
+      const element = createElement("c-unit-converter", {
+        is: UnitConverter
+      });
+      element.disableFrom = true;
+
+      // Act
+      document.body.appendChild(element);
+
+      // Assert
+      const inputs = element.shadowRoot.querySelectorAll("lightning-input");
+      expect(inputs[0].disabled).toBe(true);
+      expect(inputs[1].disabled).toBe(false);
+    });
+
+    it("should disable only the to input when disableTo is true", () => {
+      // Arrange
+      const element = createElement("c-unit-converter", {
+        is: UnitConverter
+      });
+      element.disableTo = true;
+
+      // Act
+      document.body.appendChild(element);
+
+      // Assert
+      const inputs = element.shadowRoot.querySelectorAll("lightning-input");
+      expect(inputs[0].disabled).toBe(false);
+      expect(inputs[1].disabled).toBe(true);
+    });
   });
 
   describe("behavior", () => {

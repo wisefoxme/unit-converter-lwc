@@ -9,6 +9,9 @@ export default class UnitConverter extends LightningElement {
   @api hideLabels = false;
   @api fromLabel = "From";
   @api toLabel = "To";
+  @api disabled = false;
+  @api disableFrom = false;
+  @api disableTo = false;
 
   @track _valueFrom = 0;
   @track _valueTo = 0;
@@ -31,6 +34,14 @@ export default class UnitConverter extends LightningElement {
 
   get inputVariant() {
     return this.hideLabels ? "label-hidden" : "standard";
+  }
+
+  get fromDisabled() {
+    return this.disabled || this.disableFrom;
+  }
+
+  get toDisabled() {
+    return this.disabled || this.disableTo;
   }
 
   // Conversion factors to base units (meters, grams, celsius)
