@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/wisefoxme/unit-converter-lwc/compare/v1.0.0...v1.0.1) (2025-09-18)
+
+
+### Bug Fixes
+
+* fixes the package's namespace/org location ([8a96376](https://github.com/wisefoxme/unit-converter-lwc/commit/8a96376aa0c9a6235749277e3847af8714d9f41b))
+
 ## 1.0.0 (2025-09-18)
 
 
