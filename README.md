@@ -1,5 +1,7 @@
 # Unit Converter LWC
 
+![NPM Version](https://img.shields.io/npm/v/@wisefoxme/unit-converter-lwc?style=flat-square) ![License](https://img.shields.io/github/license/wisefoxme/unit-converter-lwc) ![Downloads](https://img.shields.io/npm/dy/%40wisefoxme%2Funit-converter-lwc)
+
 A Lightning Web Component (LWC) for converting units of measurement. This component allows users to convert values between different units such as length, weight, and temperature.
 
 ## API
