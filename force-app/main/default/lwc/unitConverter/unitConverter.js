@@ -124,6 +124,11 @@ export default class UnitConverter extends LightningElement {
   }
 
   handleFromValueChange(event) {
+    // prevent conversion from happening if the value is not changed
+    if (this._valueFrom === parseFloat(event.target.value)) {
+      return;
+    }
+
     this._valueFrom = parseFloat(event.target.value) || 0;
     this._valueTo = this.convertUnits(
       this._valueFrom,
@@ -139,6 +144,11 @@ export default class UnitConverter extends LightningElement {
   }
 
   handleToValueChange(event) {
+    // prevent conversion from happening if the value is not changed
+    if (this._valueTo === parseFloat(event.target.value)) {
+      return;
+    }
+
     this._valueTo = parseFloat(event.target.value) || 0;
     this._valueFrom = this.convertUnits(
       this._valueTo,

@@ -314,5 +314,50 @@ describe("c-unit-converter", () => {
       // Assert
       expect(inputFrom.value).toBe(2000);
     });
+
+    it("should not convert when the same value is entered", async () => {
+      // Arrange
+      const element = createElement("c-unit-converter", {
+        is: UnitConverter
+      });
+      element.conversionType = "length";
+      element.fromUnit = "m";
+      element.toUnit = "km";
+
+      document.body.appendChild(element);
+
+      const inputFrom = element.shadowRoot.querySelector(
+        'lightning-input[data-id="input-from"]'
+      );
+      const inputTo = element.shadowRoot.querySelector(
+        'lightning-input[data-id="input-to"]'
+      );
+
+      // listen for conversion event
+      const conversionHandler = jest.fn();
+      element.addEventListener("conversion", conversionHandler);
+
+      // Act
+      inputFrom.value = 1500;
+      inputFrom.dispatchEvent(new CustomEvent("change"));
+
+      await Promise.resolve();
+
+      // Assert that conversion event was fired
+      expect(conversionHandler).toHaveBeenCalledTimes(1);
+      expect(inputTo.value).toBe(1.5);
+
+      jest.clearAllMocks();
+
+      // Enter the same value again
+      inputFrom.value = 1500;
+      inputFrom.dispatchEvent(new CustomEvent("change"));
+
+      await Promise.resolve();
+
+      // Assert that conversion event was not fired again
+      expect(conversionHandler).not.toHaveBeenCalled();
+      expect(inputTo.value).toBe(1.5);
+    });
   });
 });
