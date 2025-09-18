@@ -1,0 +1,30 @@
+<template>
+  <lightning-layout
+    horizontal-align="spread"
+    pull-to-boundary="small"
+    vertical-align="center"
+  >
+    <lightning-layout-item padding="around-small" size="6">
+      <lightning-input
+        type="number"
+        data-id="input-from"
+        label="From"
+        value={_valueFrom}
+        onchange={handleFromValueChange}
+        step="any"
+      >
+      </lightning-input>
+    </lightning-layout-item>
+    <lightning-layout-item padding="around-small" size="6">
+      <lightning-input
+        type="number"
+        data-id="input-to"
+        label="To"
+        value={_valueTo}
+        onchange={handleToValueChange}
+        step="any"
+      >
+      </lightning-input>
+    </lightning-layout-item>
+  </lightning-layout>
+</template>
