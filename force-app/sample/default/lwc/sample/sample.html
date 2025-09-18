@@ -8,11 +8,13 @@
     >
       <lightning-layout-item padding="around-small" size="12">
         <c-unit-converter
+          onconversion={handleChange}
           from-unit="m"
           to-unit="ft"
           conversion-type="length"
         ></c-unit-converter>
       </lightning-layout-item>
     </lightning-layout>
+    <div class="slds-var-m-around_medium">{lastChange}</div>
   </lightning-card>
 </template>
