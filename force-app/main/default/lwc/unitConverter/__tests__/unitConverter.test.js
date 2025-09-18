@@ -359,5 +359,57 @@ describe("c-unit-converter", () => {
       expect(conversionHandler).not.toHaveBeenCalled();
       expect(inputTo.value).toBe(1.5);
     });
+
+    it("should handle custom conversion factors through the @api factors", async () => {
+      // Arrange
+      const element = createElement("c-unit-converter", {
+        is: UnitConverter
+      });
+      element.conversionType = "custom";
+      element.fromUnit = "a";
+      element.toUnit = "b";
+      element.factors = { a: 1, b: 1 / 2 }; // 1 a = 2 b
+
+      document.body.appendChild(element);
+
+      const inputFrom = element.shadowRoot.querySelector(
+        'lightning-input[data-id="input-from"]'
+      );
+      const inputTo = element.shadowRoot.querySelector(
+        'lightning-input[data-id="input-to"]'
+      );
+
+      // Act
+      inputFrom.value = 3;
+      inputFrom.dispatchEvent(new CustomEvent("change"));
+
+      await Promise.resolve();
+
+      // Assert
+      expect(inputTo.value).toBe(6);
+
+      // Assert that the events contain the correct details
+      const { from, to } = element.value;
+      expect(from.value).toBe(3);
+      expect(to.value).toBe(6);
+      expect(from.unit).toBe("a");
+      expect(to.unit).toBe("b");
+
+      // convert back
+      inputTo.value = 4;
+      inputTo.dispatchEvent(new CustomEvent("change"));
+
+      await Promise.resolve();
+
+      // Assert
+      expect(inputFrom.value).toBe(2);
+
+      // Assert that the events contain the correct details
+      const result = element.value;
+      expect(result.from.value).toBe(2);
+      expect(result.to.value).toBe(4);
+      expect(result.from.unit).toBe("a");
+      expect(result.to.unit).toBe("b");
+    });
   });
 });

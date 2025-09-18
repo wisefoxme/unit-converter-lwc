@@ -1,8 +1,6 @@
 import { api, LightningElement, track } from "lwc";
 
 export default class UnitConverter extends LightningElement {
-  @api fromUnit;
-  @api toUnit;
   @api conversionType; // 'length', 'weight', 'temperature'
   @api allowUnitSelection = false;
   @api precision = 2;
@@ -15,6 +13,23 @@ export default class UnitConverter extends LightningElement {
 
   @track _valueFrom = 0;
   @track _valueTo = 0;
+  @track _fromUnit = "m";
+  @track _toUnit = "m";
+
+  @api
+  get fromUnit() {
+    return this._fromUnit;
+  }
+  set fromUnit(value) {
+    this._fromUnit = value;
+  }
+  @api
+  get toUnit() {
+    return this._toUnit;
+  }
+  set toUnit(value) {
+    this._toUnit = value;
+  }
 
   @api
   set valueFrom(val) {
@@ -42,6 +57,17 @@ export default class UnitConverter extends LightningElement {
 
   get toDisabled() {
     return this.disabled || this.disableTo;
+  }
+
+  @api
+  get factors() {
+    return this.conversionFactors[this.conversionType];
+  }
+  set factors(value) {
+    // check if the value is a valid object with at least one key-value pair
+    if (value && typeof value === "object" && Object.keys(value).length > 0) {
+      this.conversionFactors[this.conversionType] = value;
+    }
   }
 
   // Conversion factors to base units (meters, grams, celsius)
@@ -72,14 +98,18 @@ export default class UnitConverter extends LightningElement {
   }
 
   convertUnits(value, fromUnit, toUnit, type) {
-    if (!value || !fromUnit || !toUnit || !type) return 0;
+    if (!value || !fromUnit || !toUnit || !type) {
+      return 0;
+    }
 
     if (type === "temperature") {
       return this.convertTemperature(value, fromUnit, toUnit);
     }
 
     const factors = this.conversionFactors[type];
-    if (!factors || !factors[fromUnit] || !factors[toUnit]) return 0;
+    if (!factors || !factors[fromUnit] || !factors[toUnit]) {
+      return 0;
+    }
 
     // Convert to base unit, then to target unit
     const baseValue = value * factors[fromUnit];
@@ -132,14 +162,14 @@ export default class UnitConverter extends LightningElement {
     this._valueFrom = parseFloat(event.target.value) || 0;
     this._valueTo = this.convertUnits(
       this._valueFrom,
-      this.fromUnit,
-      this.toUnit,
+      this._fromUnit,
+      this._toUnit,
       this.conversionType
     );
 
     this.dispatchConversionEvent({
-      from: { unit: this.fromUnit, value: this._valueFrom },
-      to: { unit: this.toUnit, value: this._valueTo }
+      from: { unit: this._fromUnit, value: this._valueFrom },
+      to: { unit: this._toUnit, value: this._valueTo }
     });
   }
 
@@ -152,14 +182,14 @@ export default class UnitConverter extends LightningElement {
     this._valueTo = parseFloat(event.target.value) || 0;
     this._valueFrom = this.convertUnits(
       this._valueTo,
-      this.toUnit,
-      this.fromUnit,
+      this._toUnit,
+      this._fromUnit,
       this.conversionType
     );
 
     this.dispatchConversionEvent({
-      from: { unit: this.toUnit, value: this._valueTo },
-      to: { unit: this.fromUnit, value: this._valueFrom }
+      from: { unit: this._toUnit, value: this._valueTo },
+      to: { unit: this._fromUnit, value: this._valueFrom }
     });
   }
 
@@ -174,8 +204,8 @@ export default class UnitConverter extends LightningElement {
   @api
   get value() {
     return {
-      from: { unit: this.fromUnit, value: this._valueFrom },
-      to: { unit: this.toUnit, value: this._valueTo }
+      from: { unit: this._fromUnit, value: this._valueFrom },
+      to: { unit: this._toUnit, value: this._valueTo }
     };
   }
 }
