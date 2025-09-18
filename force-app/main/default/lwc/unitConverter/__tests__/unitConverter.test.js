@@ -108,8 +108,10 @@ describe("c-unit-converter", () => {
       expect(inputTo.value).toBe(1.5);
 
       const { from, to } = element.value;
-      expect(from).toBe(1500);
-      expect(to).toBe(1.5);
+      expect(from.value).toBe(1500);
+      expect(to.value).toBe(1.5);
+      expect(from.unit).toBe("m");
+      expect(to.unit).toBe("km");
 
       // convert back
       inputTo.value = 2;
@@ -193,6 +195,76 @@ describe("c-unit-converter", () => {
 
       // Assert
       expect(inputFrom.value).toBe(0);
+    });
+
+    it("should assert that the event is fired with correct detail", async () => {
+      // Arrange
+      const element = createElement("c-unit-converter", {
+        is: UnitConverter
+      });
+      element.conversionType = "length";
+      element.fromUnit = "m";
+      element.toUnit = "km";
+
+      document.body.appendChild(element);
+
+      const inputFrom = element.shadowRoot.querySelector(
+        'lightning-input[data-id="input-from"]'
+      );
+      const inputTo = element.shadowRoot.querySelector(
+        'lightning-input[data-id="input-to"]'
+      );
+
+      // listen for conversion event
+      const conversionHandler = jest.fn();
+      element.addEventListener("conversion", conversionHandler);
+
+      // Act
+      inputFrom.value = 1500;
+      inputFrom.dispatchEvent(new CustomEvent("change"));
+
+      await Promise.resolve();
+
+      // Assert that conversion event was fired
+      expect(conversionHandler).toHaveBeenCalled();
+      expect(conversionHandler.mock.calls[0][0].detail.from).toEqual({
+        unit: "m",
+        value: 1500
+      });
+      expect(conversionHandler.mock.calls[0][0].detail.to).toEqual({
+        unit: "km",
+        value: 1.5
+      });
+
+      // Assert
+      expect(inputTo.value).toBe(1.5);
+
+      const { from, to } = element.value;
+      expect(from.value).toBe(1500);
+      expect(to.value).toBe(1.5);
+      expect(from.unit).toBe("m");
+      expect(to.unit).toBe("km");
+
+      jest.clearAllMocks();
+
+      // convert back
+      inputTo.value = 2;
+      inputTo.dispatchEvent(new CustomEvent("change"));
+      await Promise.resolve();
+
+      // Assert that conversion event was fired
+      expect(conversionHandler).toHaveBeenCalled();
+      expect(conversionHandler.mock.calls[0][0].detail.from).toEqual({
+        unit: "km",
+        value: 2
+      });
+      expect(conversionHandler.mock.calls[0][0].detail.to).toEqual({
+        unit: "m",
+        value: 2000
+      });
+
+      // Assert
+      expect(inputFrom.value).toBe(2000);
     });
   });
 });

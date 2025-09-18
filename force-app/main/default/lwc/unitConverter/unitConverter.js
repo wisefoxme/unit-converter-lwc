@@ -73,7 +73,10 @@ export default class UnitConverter extends LightningElement {
     // Convert to base unit, then to target unit
     const baseValue = value * factors[fromUnit];
 
-    return this._toFloat((baseValue / factors[toUnit]).toFixed(this.precision));
+    const result = this._toFloat(
+      (baseValue / factors[toUnit]).toFixed(this.precision)
+    );
+    return result;
   }
 
   convertTemperature(value, fromUnit, toUnit) {
@@ -117,6 +120,11 @@ export default class UnitConverter extends LightningElement {
       this.toUnit,
       this.conversionType
     );
+
+    this.dispatchConversionEvent({
+      from: { unit: this.fromUnit, value: this._valueFrom },
+      to: { unit: this.toUnit, value: this._valueTo }
+    });
   }
 
   handleToValueChange(event) {
@@ -127,10 +135,26 @@ export default class UnitConverter extends LightningElement {
       this.fromUnit,
       this.conversionType
     );
+
+    this.dispatchConversionEvent({
+      from: { unit: this.toUnit, value: this._valueTo },
+      to: { unit: this.fromUnit, value: this._valueFrom }
+    });
+  }
+
+  dispatchConversionEvent(detail) {
+    this.dispatchEvent(
+      new CustomEvent("conversion", {
+        detail
+      })
+    );
   }
 
   @api
   get value() {
-    return { from: this._valueFrom, to: this._valueTo };
+    return {
+      from: { unit: this.fromUnit, value: this._valueFrom },
+      to: { unit: this.toUnit, value: this._valueTo }
+    };
   }
 }
