@@ -23,6 +23,60 @@ describe("c-unit-converter", () => {
       const inputs = element.shadowRoot.querySelectorAll("lightning-input");
       expect(inputs.length).toBe(2);
     });
+
+    it("should hide labels when hideLabels is true", () => {
+      // Arrange
+      const element = createElement("c-unit-converter", {
+        is: UnitConverter
+      });
+      element.hideLabels = true;
+
+      // Act
+      document.body.appendChild(element);
+
+      // Assert
+      const inputs = element.shadowRoot.querySelectorAll("lightning-input");
+      expect(inputs[0].variant).toBe("label-hidden");
+      expect(inputs[1].variant).toBe("label-hidden");
+    });
+
+    it("should show labels when hideLabels is false", () => {
+      // Arrange
+      const element = createElement("c-unit-converter", {
+        is: UnitConverter
+      });
+      element.hideLabels = false;
+
+      // Act
+      document.body.appendChild(element);
+
+      // Assert
+      const inputs = element.shadowRoot.querySelectorAll("lightning-input");
+      expect(inputs[0].variant).toBe("standard");
+      expect(inputs[1].variant).toBe("standard");
+
+      // assert labels
+      expect(inputs[0].label).toBe("From");
+      expect(inputs[1].label).toBe("To");
+    });
+
+    it("should show custom labels when fromLabel and toLabel are set", () => {
+      // Arrange
+      const element = createElement("c-unit-converter", {
+        is: UnitConverter
+      });
+      element.hideLabels = false;
+      element.fromLabel = "Custom From";
+      element.toLabel = "Custom To";
+
+      // Act
+      document.body.appendChild(element);
+
+      // Assert
+      const inputs = element.shadowRoot.querySelectorAll("lightning-input");
+      expect(inputs[0].label).toBe("Custom From");
+      expect(inputs[1].label).toBe("Custom To");
+    });
   });
 
   describe("behavior", () => {

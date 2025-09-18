@@ -8,7 +8,8 @@
       <lightning-input
         type="number"
         data-id="input-from"
-        label="From"
+        label={fromLabel}
+        variant={inputVariant}
         value={_valueFrom}
         onchange={handleFromValueChange}
         step="any"
@@ -19,7 +20,8 @@
       <lightning-input
         type="number"
         data-id="input-to"
-        label="To"
+        label={toLabel}
+        variant={inputVariant}
         value={_valueTo}
         onchange={handleToValueChange}
         step="any"

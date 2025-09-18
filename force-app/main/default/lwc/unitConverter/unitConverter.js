@@ -6,6 +6,9 @@ export default class UnitConverter extends LightningElement {
   @api conversionType; // 'length', 'weight', 'temperature'
   @api allowUnitSelection = false;
   @api precision = 2;
+  @api hideLabels = false;
+  @api fromLabel = "From";
+  @api toLabel = "To";
 
   @track _valueFrom = 0;
   @track _valueTo = 0;
@@ -24,6 +27,10 @@ export default class UnitConverter extends LightningElement {
   }
   get valueTo() {
     return this._valueTo;
+  }
+
+  get inputVariant() {
+    return this.hideLabels ? "label-hidden" : "standard";
   }
 
   // Conversion factors to base units (meters, grams, celsius)
